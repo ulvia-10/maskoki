@@ -17,8 +17,12 @@
   "dependencies": {
     "@hapi/boom": "9.x.x",
     "@hapi/joi": "17.x.x",
+    "hapi-auth-jwt2": "^10.1.0",
     "haute-couture": "3.x.x",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
     "objection": "2.x.x",
+    "schmervice": "^1.5.0",
     "schwifty": "5.x.x"
   },
   "peerDependencies": {

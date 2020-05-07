@@ -32,12 +32,26 @@ module.exports = new Confidence.Store({
         plugins: [
             {
                 plugin: '../lib', // Main plugin
-                options: {}
+                routes: {
+                    prefix: '/api'
+                },
+                options: {
+                    jwtKey: {
+                        $filter: { $env: 'NODE_ENV' },
+                        $default: {
+                            $env: 'APP_SECRET',
+                            $default: 'app-secret'
+                        },
+                        production: {
+                            $env: 'APP_SECRET'
+                        }
+                    }
+                }
             },
             {
                 plugin: './plugins/swagger'
             },
-          {
+            {
                 plugin: 'schwifty',
                 options: {
                     $filter: 'NODE_ENV',
@@ -45,10 +59,17 @@ module.exports = new Confidence.Store({
                     $base: {
                         migrateOnStart: true,
                         knex: {
-                            client: 'sqlite3',
-                            useNullAsDefault: true,     // Suggested for sqlite3
+                            client: 'mysql',
                             connection: {
-                                filename: ':memory:'
+                                host: { $env: 'DB_HOST' },
+                                port: {
+                                    $env: 'DB_PORT',
+                                    $coerce: 'number',
+                                    $default: 3306
+                                },
+                                database: { $env: 'DB_DATABASE' },
+                                user: { $env: 'DB_USERNAME' },
+                                password: { $env: 'DB_PASSWORD' }
                             },
                             migrations: {
                                 stub: Schwifty.migrationsStubPath
